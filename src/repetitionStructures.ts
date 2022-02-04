@@ -59,37 +59,108 @@ lista1.forEach(item =>{
     console.log(item);
 })
 
-// criando uma classe, com seus atributos, construtor e metodos
+// criando uma classe Conta, com seus atributos, construtor e metodos
 export class Conta{
-    numeroDaConta: number;
+    private readonly _numeroDaConta: number; // utilizado o underline como convencao da comunidade para informar q eh privado
     titular: string;
-    saldo: number;
+    private _saldo: number;
 
-    constructor(numeroDaConta: number, titular: string, saldo: number){
-        this.numeroDaConta = numeroDaConta;
+    constructor(titular: string, saldo: number){
+        this._numeroDaConta = Math.floor(Math.random() * 1000) + 1;
         this.titular = titular;
-        this.saldo = saldo;
+        this._saldo = saldo;
     }
 
-    consultaSaldo(): string{
-        return `O saldo atual é: ${this.saldo}`;
+    get numeroDaConta(): number{
+        return this._numeroDaConta;
     }
 
-    adicionaSaldo(saldo:number): void{
-        console.log(this.saldo + saldo);
+    protected consultaSaldo(): number{
+        return this._saldo;
     }
 
-    sacarDoSaldo(valor:number): void{
-        console.log(this.saldo -= valor);
+    protected adicionaSaldo(saldo:number): void{
+        console.log(this._saldo + saldo);
+    }
+
+    protected sacarDoSaldo(valor:number): void{
+        console.log(this._saldo -= valor);
     }
 
 }
 
-// instanciando um objeto da classe Conta
-const primeiraConta = new Conta(123, "Luna",5000);
-console.log(primeiraConta);
+// Criando classe PF e classe PJ que herdam da classe Conta
+class ContaPF extends Conta{
+    cpf: number;
 
-// chamando o metodo criado
-console.log(primeiraConta.consultaSaldo());
-primeiraConta.adicionaSaldo(1000);
-primeiraConta.sacarDoSaldo(500);
+    constructor(cpf: number, titular: string, saldo: number){
+        super(titular, saldo);
+        this.cpf = cpf;
+    }
+
+    consultar(): string{
+        return `Saldo atual: ${this.consultaSaldo()}`;
+    }
+
+    sacar(valor: number){
+        if(this.consultaSaldo() > 0 && valor <= this.consultaSaldo()){
+            this.sacarDoSaldo(valor);
+        }
+    }
+}
+
+// instanciando um objeto da classe  
+const primeiraConta = new Conta("Luna",5000);
+console.log("Imprime titular da conta: ",primeiraConta.titular);
+console.log("Imprime numero da conta: ",primeiraConta.numeroDaConta); // gera cada vez que builda, apenas para teste
+
+// busca por elemento atraves do seu indice
+const list = [1, 2, 3, 4, 555];
+const listLength = list.length;
+const lastItemIndex = listLength - 1;
+const lastItem = list[lastItemIndex]; // 555
+console.log("List: "+list);
+console.log("Tamanho da lista: ", listLength);
+console.log("Indice: ", lastItemIndex); // indice inicia em zero, logo o ultimo índice é o quatro
+console.log("Valor do ultimo elemento: ", lastItem);
+
+// filtro
+const listaA = [10, 20, 30, 40, 50];
+const itemsLessThanTwenty = listaA.filter((item) => item < 20);
+console.log("Busca listaA: "+itemsLessThanTwenty);
+
+
+var employees = [{  
+    id: 33,  
+    name: 'Jhon',  
+    salary: 30000,
+    dept: "it"  
+}, {  
+    id: 21,  
+    name: 'Mel',  
+    salary: 35000,  
+    dept: "hr"  
+}, {  
+    id: 56,  
+    name: 'Rahul',  
+    salary: 32000,  
+    dept: "it"  
+}, {  
+    id: 104,  
+    name: 'Zoe Jhon',  
+    salary: 38000,  
+    dept: "hr"  
+}];   
+
+// continuacao do uso do metodo filter
+const searchEmployees = employees.filter(function(item){  
+    return item.dept == "it";  
+ });
+
+ const searchName = employees.filter((item)=>{
+    return item.name == "Jhon";
+ });
+ console.log("Lista de empregados: ", employees)
+ console.log("Busca de empregados do depart it: ", searchEmployees);
+ console.log("Busca pelo nome: ", searchName);
+
