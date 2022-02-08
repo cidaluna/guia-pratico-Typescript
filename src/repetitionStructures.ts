@@ -164,3 +164,45 @@ const searchEmployees = employees.filter(function(item){
  console.log("Busca de empregados do depart it: ", searchEmployees);
  console.log("Busca pelo nome: ", searchName);
 
+// classe Person
+class Person {
+    constructor(private firstName: string, private lastName: string) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+    getFullName(): string {
+        return `${this.firstName} ${this.lastName}`;
+    }
+    describe(): string {
+        return `This is ${this.firstName} ${this.lastName}.`;
+    }
+    running(meters:number) {
+        return `Mensagem padrão para: ${this.getFullName()}.`;
+    }
+}
+
+// classe Employee
+class Employee extends Person{
+    empCode: number;
+    
+    constructor(firstName: string,lastName: string, protected code: number) {
+        super(firstName, lastName);
+        this.empCode = code;
+    }
+
+    running(meters:number) {
+        return `${this.getFullName()} ran  ${meters} m.`;
+    }
+    
+}
+
+let person1 = new Employee("Cida", "Gonçalves", 100);
+console.log("Description: ",person1.describe());
+console.log("Full Name: ",person1.getFullName());
+
+let person2 = new Employee("James", "Souza", 5);
+console.log("Description: ",person2.describe());
+console.log("Full Name: ",person2.getFullName());
+console.log("Running: ", person2.running(10));
+
+
